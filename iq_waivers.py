@@ -1,17 +1,15 @@
 #!/usr/bin/python3
 
-import json
 import requests
 import getpass
 from datetime import datetime
+import json
 import csv
 import os
 
-# pylint: disable=maybe-no-member
-requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
 iq_session = requests.Session()
 iq_session.auth = requests.auth.HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt='Password: ', stream=None))
-iq_session.verify = False
+iq_session.verify = 'hlblbclmp001-standard-com-chain.pem'
 iq_session.cookies.set('CLM-CSRF-TOKEN', 'api')
 iq_headers = {'X-CSRF-TOKEN': 'api'}
 iq_url = "https://iqserver.standard.com"
