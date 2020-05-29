@@ -58,8 +58,8 @@ def processComponent(component, publicId, violationStage):
 	packageUrl = component["component"]["packageUrl"]
 	for violation in component["waivedPolicyViolations"]:
 		waiver = violation["policyWaiver"]
-		if waiver["isObsolete"]:
-			continue
+		#if waiver["isObsolete"]:
+		#	continue
 
 		ownerId = publicId if waiver["scopeOwnerType"] == "application" else waiver["scopeOwnerId"]
 		dfference = days_since(waiver["createTime"][:10])
@@ -74,7 +74,8 @@ def processComponent(component, publicId, violationStage):
 			"ownerType" : waiver["scopeOwnerType"], 
 			"scopeOwnerName" : waiver["scopeOwnerName"], 
 			"createTime": waiver["createTime"],
-			"isObsolete": waiver["isObsolete"]
+			"isObsolete": waiver["isObsolete"],
+			"comment": waiver["comment"]
 		})
 
 def processWaiver(waiver):

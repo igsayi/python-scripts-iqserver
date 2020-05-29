@@ -8,13 +8,13 @@ iq_session.auth = requests.auth.HTTPBasicAuth(getpass.getuser(), getpass.getpass
 iq_session.verify = False
 iq_session.cookies.set('CLM-CSRF-TOKEN', 'api')
 iq_headers = {'X-CSRF-TOKEN': 'api'}
-iq_url = "https://iqserver-dev.standard.com"
+iq_url = "https://iqserver.standard.com"
 
 
 stages = ["release"]
 
-apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=BREJBOSSDeployTest').json()["applications"]
-# apps = iq_session.get(f'{iq_url}/api/v2/applications').json()["applications"]
+#apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=BREJBOSSDeployTest').json()["applications"]
+apps = iq_session.get(f'{iq_url}/api/v2/applications').json()["applications"]
 for app in apps:
 	publicId = app["publicId"]
 	app_id = app["id"]
@@ -24,4 +24,4 @@ for app in apps:
 			report_id = report["reportHtmlUrl"].split("/")[-1]
 			url = f'{iq_url}/rest/report/{publicId}/{report_id}/reevaluatePolicy'
 			result = iq_session.post(url, headers=iq_headers)
-			print(result.status_code == requests.codes.ok)
+			print(publicId, ': ', result.status_code == requests.codes.ok)
