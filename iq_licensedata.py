@@ -12,6 +12,9 @@ for app in apps:
     reportIds = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}').json()
     
     for reportId in reportIds:
+        if reportId["stage"] != "release":
+            continue
+
         repUrl   = reportId["reportDataUrl"]
 
         rawComponents = iq_session.get(f'{iq_url}/{repUrl}').json()["components"] # this is BOM or raw report components
@@ -27,19 +30,29 @@ for app in apps:
             compLicense["hash"] = rawComponent["hash"]
             compLicense["displayName"] = rawComponent["displayName"]
             compLicense["packageUrl"] = rawComponent["packageUrl"]
-            compLicense["pathname"] = str(rawComponent["pathnames"])[0:100]     
+            compLicense["pathname"] = str(rawComponent["pathnames"])[0:500]     
             compLicense["proprietary"] = rawComponent["proprietary"]                                
             compLicense["matchState"] = rawComponent["matchState"]
-            
+
             complicenseData = rawComponent["licenseData"]
             if complicenseData is not None:
+                licenseId = ""
+                licenseName = ""
+                licenseThreatGroupName = ""
+                licenseThreatGroupLevel = ""
+                licenseThreatGroupCategory = ""
                 for el in complicenseData["effectiveLicenses"]:
-                    compLicense["licenseId"] = el["licenseId"]
-                    compLicense["licenseName"] = el["licenseName"]
+                    licenseId = licenseId + ", " + el["licenseId"]
+                    licenseName = licenseName + ", " +el["licenseName"]
+                compLicense["licenseId"] = str(licenseId)[2:]
+                compLicense["licenseName"] = str(licenseName)[2:]
                 for elt in complicenseData["effectiveLicenseThreats"]:
-                    compLicense["licenseThreatGroupName"] = elt["licenseThreatGroupName"]
-                    compLicense["licenseThreatGroupLevel"] = elt["licenseThreatGroupLevel"]
-                    compLicense["licenseThreatGroupCategory"] = elt["licenseThreatGroupCategory"]                
+                    licenseThreatGroupName = licenseThreatGroupName + ", " + elt["licenseThreatGroupName"]
+                    licenseThreatGroupLevel = licenseThreatGroupLevel + ", " + str(elt["licenseThreatGroupLevel"])
+                    licenseThreatGroupCategory = licenseThreatGroupCategory + ", " + elt["licenseThreatGroupCategory"]                
+                compLicense["licenseThreatGroupName"] = str(licenseThreatGroupName)[2:]
+                compLicense["licenseThreatGroupLevel"] = str(licenseThreatGroupLevel)[2:]
+                compLicense["licenseThreatGroupCategory"] = str(licenseThreatGroupCategory)[2:]
             
             licensedataReport.append(compLicense)
 savecsvreport("licensedataReport", licensedataReport)
