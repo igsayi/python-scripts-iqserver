@@ -2,5 +2,6 @@
 /api/v2/reports/applications/{applicationInternalid}                    # Get reportIds for AppId; for ALL remove applicationInternalid
 /api/v2/applications/[applicationPublicId]/reports/[reportId]/raw       # Get Raw Component's Data by Report - aka BOM
 /api/v2/applications/[applicationPublicId]/reports/[reportId]/policy    # Get Policy violations - Component oriented
-
-
+/api/v2/reports/components/waivers                                      # Get all waivers
+/rest/policyWaiver/{ownerType}/{ownerId}/{policyWaiverId}               # Delete the waiver
+/rest/report/{publicId}/{report_id}/reevaluatePolicy                    # Post reevaluatePolicy
