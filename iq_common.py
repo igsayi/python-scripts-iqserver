@@ -29,8 +29,8 @@ for otl in orgtagslist:
     if otl["name"] == "Hosted":
         hostedTag = otl["id"]
 
-#apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=PDM7').json()["applications"]
-apps = iq_session.get(f'{iq_url}/api/v2/applications').json()["applications"]
+apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=PDM7').json()["applications"]
+#apps = iq_session.get(f'{iq_url}/api/v2/applications').json()["applications"]
 
 # Enrich Apps
 for app in apps:
@@ -51,7 +51,7 @@ for app in apps:
             app["app_hosted"] = "Hosted"
     app.pop("organizationId")
     app.pop("applicationTags")
-    app.pop("id")    
+    #app.pop("id")    
 
 def savecsvreport(file_name, csvrecords):
     if not os.path.exists("output"):
