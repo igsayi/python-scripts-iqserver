@@ -27,8 +27,10 @@ for app in apps:
             compLicense["hash"] = rawComponent["hash"]
             compLicense["displayName"] = rawComponent["displayName"]
             compLicense["packageUrl"] = rawComponent["packageUrl"]
+            compLicense["pathname"] = str(rawComponent["pathnames"])[0:100]     
             compLicense["proprietary"] = rawComponent["proprietary"]                                
             compLicense["matchState"] = rawComponent["matchState"]
+            
             complicenseData = rawComponent["licenseData"]
             if complicenseData is not None:
                 for el in complicenseData["effectiveLicenses"]:
