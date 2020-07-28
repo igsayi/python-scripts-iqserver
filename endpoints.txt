@@ -3,5 +3,38 @@
 /api/v2/applications/[applicationPublicId]/reports/[reportId]/raw       # Get Raw Component's Data by Report - aka BOM
 /api/v2/applications/[applicationPublicId]/reports/[reportId]/policy    # Get Policy violations - Component oriented
 /api/v2/reports/components/waivers                                      # Get all waivers
+
+GET /api/v2/policyWaivers/application/{applicationId}
+GET /api/v2/policyWaivers/organization/{organizationId}
+GET /api/v2/policyWaivers/repository/{repositoryId}
+GET /api/v2/policyWaivers/repository_container/REPOSITORY_CONTAINER_ID
+
+DELETE /api/v2/policyWaivers/application/{applicationId}/{policyWaiverId}
+
 /rest/policyWaiver/{ownerType}/{ownerId}/{policyWaiverId}               # Delete the waiver
 /rest/report/{publicId}/{report_id}/reevaluatePolicy                    # Post reevaluatePolicy
+GET /api/v2/reports/applications/{applicationInternalId}/history
+
+
+
+GET /api/v2/policies/
+GET /api/v2/policyViolations?p=policyid
+
+POST api/v2/reports/metrics                                             # Success Matrix 
+            {
+            // "MONTH" or "WEEK"
+            "timePeriod": "MONTH",
+            
+            // If timePeriod is MONTH - an ISO 8601 year and month without timezone.
+            // If timePeriod is WEEK  - an ISO 8601 week year and week (e.g. week of 29 December 2008 is "2009-W01").
+            "firstTimePeriod": "2018-08",
+
+            // Same rules as above. Must be equal to or after firstTimePeriod. Can be omitted,
+            // in which case data for all successive time periods is provided including partial data for the current one.
+            "lastTimePeriod": "2018-08",
+
+            // If both of these are null or empty, data for all applications (that the user has access to) is returned.
+            // applicationIds are Internal ids.
+            "applicationIds": [],
+            "organizationIds": []
+            }
