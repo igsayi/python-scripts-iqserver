@@ -25,33 +25,37 @@ for app in apps:
         rawComponents = iq_session.get(f'{iq_url}/{repUrl}').json()["components"] # this is BOM or raw report components
 
         for rawComponent in rawComponents:            
-
-                if rawComponent["securityData"] is not None and len(rawComponent["securityData"]) >0:
-                        secIssues = []
-                        secIssues = rawComponent["securityData"]["securityIssues"]
-                        if secIssues is not None and len(secIssues) > 0:
-                                secIssues.sort(key=myFunc)
-                                for secIssue in secIssues:
-                                        if secIssue["status"] == "Not Applicable":
-                                                continue
-                                        compSecurity = {}
-                                        compSecurity.update(app)
-                                        # compSecurity["organization"] = app["organization"]
-                                        # compSecurity["apppublicId"] = app["publicId"]
-                                        # compSecurity["Stage"] = reportId["stage"]
-                                        # compSecurity["evaluationDate"]  = reportId["evaluationDate"]
-                                        # compSecurity["reportDataUrl"]  = reportId["reportDataUrl"]
-                                        # compSecurity["hash"] = rawComponent["hash"]
-                                        compSecurity["displayName"] = rawComponent["displayName"]
-                                        compSecurity["packageUrl"] = rawComponent["packageUrl"]
-                                        # compSecurity["pathname"] = str(rawComponent["pathnames"])[0:500]     
-                                        compSecurity["proprietary"] = rawComponent["proprietary"]                                
-                                        compSecurity["matchState"] = rawComponent["matchState"]
-                                        compSecurity["severity"] = math.trunc(secIssue["severity"])
-                                        compSecurity["status"] = secIssue["status"]
-                                        compSecurity["threatCategory"] = secIssue["threatCategory"]
-                                        compSecurity["reference"] = secIssue["reference"]
-                                        # compSecurity["url"] = secIssue["url"]
-                                        securitydataReport.append(compSecurity)
+            if rawComponent["securityData"] is not None and len(rawComponent["securityData"]) >0:
+                secIssues = []
+                secIssues = rawComponent["securityData"]["securityIssues"]
+                if secIssues is not None and len(secIssues) > 0:
+                    secIssues.sort(key=myFunc)
+                    prevSeverity = 0
+                    for secIssue in secIssues:
+                        if secIssue["status"] == "Not Applicable":
+                            continue
+                        if prevSeverity == math.trunc(secIssue["severity"]):
+                            compSecurity["reference"] = compSecurity["reference"] + "; " + secIssue["reference"]
+                            continue
+                        compSecurity = {}
+                        compSecurity.update(app)
+                        # compSecurity["organization"] = app["organization"]
+                        # compSecurity["apppublicId"] = app["publicId"]
+                        # compSecurity["Stage"] = reportId["stage"]
+                        # compSecurity["evaluationDate"]  = reportId["evaluationDate"]
+                        # compSecurity["reportDataUrl"]  = reportId["reportDataUrl"]
+                        # compSecurity["hash"] = rawComponent["hash"]
+                        compSecurity["displayName"] = rawComponent["displayName"]
+                        compSecurity["packageUrl"] = rawComponent["packageUrl"]
+                        # compSecurity["pathname"] = str(rawComponent["pathnames"])[0:500]     
+                        compSecurity["proprietary"] = rawComponent["proprietary"]                                
+                        compSecurity["matchState"] = rawComponent["matchState"]
+                        compSecurity["severity"] = math.trunc(secIssue["severity"])
+                        compSecurity["status"] = secIssue["status"]
+                        compSecurity["threatCategory"] = secIssue["threatCategory"]
+                        compSecurity["reference"] = secIssue["reference"]
+                        # compSecurity["url"] = secIssue["url"]
+                        securitydataReport.append(compSecurity)
+                        #prevSeverity = math.trunc(secIssue["severity"])
 savecsvreport("securitydataReport", securitydataReport)
-# saveOutput("rawComponents", rawComponents)
+saveOutput("securitydataReport", securitydataReport)
