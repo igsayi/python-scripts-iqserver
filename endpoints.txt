@@ -28,3 +28,5 @@ POST api/v2/reports/metrics                                             # Succes
             "applicationIds": [],
             "organizationIds": []
             }
+
+GET /api/v2/reports/applications/{applicationInternalId}/history            

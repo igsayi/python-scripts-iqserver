@@ -73,7 +73,7 @@ for app in apps:
                 # secViolation["grandfathered"] = compViolation["grandfathered"]
                 # secViolation["pathnames"] = str(polComponent["pathnames"])[0:1000]
                 polviolationreport.append(secViolation)
-                #prevSeverity = compViolation["policyThreatLevel"]
+                #prevSeverity = compViolation["policyThreatLevel"]      # Comment this if you want to disable grouping
             #onlyComponent.pop("violations")
             #onlyComponent.pop("componentIdentifier")
             #onlyComponent.pop("pathnames")
@@ -81,4 +81,4 @@ for app in apps:
         #saveOutput("onlyCompoents_file-"+repStage, onlyComponents)
 
 savecsvreport("PolicyViolations", polviolationreport)
-saveOutput("polComponents", polComponents)
+# saveOutput("polComponents", polComponents)

@@ -21,12 +21,9 @@ for app in apps:
 
         for rawComponent in rawComponents:            
             component = {}
-
             component["organization"] = app["organization"]
             component["apppublicId"] = app["publicId"]
             component["Stage"] = reportId["stage"]
-            # component["evaluationDate"]  = reportId["evaluationDate"]
-            # component["reportDataUrl"]  = reportId["reportDataUrl"]
             component["hash"] = rawComponent["hash"]
             component["displayName"] = rawComponent["displayName"]
             component["packageUrl"] = rawComponent["packageUrl"]

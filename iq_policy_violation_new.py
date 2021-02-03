@@ -56,12 +56,12 @@ for pol in pols:
             # policyViolation["hash"] = polViol["component"]["hash"]
             policyViolation["CVE"] = CVEid
             #prevSeverity = compViolation["policyThreatLevel"]
-            prevOpenTime = polViol["openTime"]
-            prevPackage = polViol["component"]["packageUrl"]            
+            prevOpenTime = polViol["openTime"]                  # Comment this if you want to disable grouping
+            prevPackage = polViol["component"]["packageUrl"]    # Comment this if you want to disable grouping        
             polviolationreport.append(policyViolation)
             # print("reasons: "+ str(polViol["constraintViolations"][0]["reasons"]))
             
 
 savecsvreport("Policy-Violations1", polviolationreport)
-saveOutput("Policy-Violations1", appViolations)
-saveOutput("Policy", pols)
+# saveOutput("Policy-Violations1", appViolations)
+# saveOutput("Policy", pols)

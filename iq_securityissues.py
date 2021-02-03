@@ -56,6 +56,6 @@ for app in apps:
                         compSecurity["reference"] = secIssue["reference"]
                         # compSecurity["url"] = secIssue["url"]
                         securitydataReport.append(compSecurity)
-                        #prevSeverity = math.trunc(secIssue["severity"])
+                        #prevSeverity = math.trunc(secIssue["severity"])    # Comment this if you want to disable grouping
 savecsvreport("securitydataReport", securitydataReport)
-saveOutput("securitydataReport", securitydataReport)
+# saveOutput("securitydataReport", securitydataReport)

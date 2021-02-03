@@ -46,7 +46,7 @@ def saveOutput(file_name, d):
 ## ----------------------------------------------------------------------------
 def filterApplications():
 	waivers = get_waivers()
-	saveOutput(waivers_file_name, waivers)
+	# saveOutput(waivers_file_name, waivers)
 	for application in waivers["applicationWaivers"]:
 		publicId = application["application"]["publicId"]
 		for stage in application["stages"]:
@@ -94,7 +94,7 @@ def processWaiver(waiver):
 
 filterApplications()
 print( json.dumps(report, indent=4) )
-saveOutput(report_file_name, report)
+# saveOutput(report_file_name, report)
 
 reportfile = 'output/waivers-Report-{}.csv'.format(datetime.now().strftime("%Y%m%d"))
 report_data = open(reportfile, 'w', newline='')
