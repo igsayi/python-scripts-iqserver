@@ -29,4 +29,12 @@ POST api/v2/reports/metrics                                             # Succes
             "organizationIds": []
             }
 
-GET /api/v2/reports/applications/{applicationInternalId}/history            
+GET /api/v2/reports/applications/{applicationInternalId}/history
+GET /api/v2/securityOverrides[?filter=filterValue] 
+curl -K /c/NexusIQ/curl-parm.txt -X GET 'https://iqserver.standard.com/api/v2/securityOverrides'         
+
+curl -K /c/NexusIQ/curl-parm.txt -X POST -d '{"components":[{"hash": "35566f5b194803692294"}]}' 'https://iqserver.standard.com/api/v2/components/details'
+
+curl -K /c/NexusIQ/curl-parm.txt -X GET 'https://iqserver.standard.com/api/v2/vulnerabilities/CVE-2019-17571'
+
+GET /api/v2/reports/applications/{applicationInternalId}/history    # Reports history
