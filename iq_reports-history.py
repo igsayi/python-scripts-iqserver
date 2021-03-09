@@ -9,8 +9,7 @@ finalReport = []
 for app in apps:
     app_id = app["id"]
 
-    reports = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}').json()
-        
+    reports = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}/history').json()["reports"]
     if reports is not None and len(reports) >0:
         for report in reports:
             #if reportId["stage"] != "release":
@@ -21,7 +20,14 @@ for app in apps:
             finalReportrecord["evaluationDate"] = report["evaluationDate"]
             finalReportrecord["reportDataUrl"] = report["reportDataUrl"]
 
+            finalReportrecord["policyEvaluationId"] = report["policyEvaluationId"]
+            finalReportrecord["scanId"] = report["scanId"]
+            finalReportrecord["isForMonitoring"] = report["isForMonitoring"]
+            finalReportrecord["commitHash"] = report["commitHash"]
+            finalReportrecord["affectedComponentCount"] = report["policyEvaluationResult"]["affectedComponentCount"]
+            finalReportrecord["totalComponentCount"] = report["policyEvaluationResult"]["totalComponentCount"]
+
             finalReport.append(dict(finalReportrecord))
 
-savecsvreport("iq_reports", finalReport)
+savecsvreport("iq_reports-history", finalReport)
 
