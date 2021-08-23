@@ -3,4 +3,4 @@ from iq_common import saveOutput as saveOutput
 from iq_common import apps as apps
  
 savecsvreport("appReport", apps)
-saveOutput("appReport", apps)
+# saveOutput("appReport", apps)

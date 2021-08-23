@@ -49,7 +49,7 @@ coverage.xml
 .pytest_cache/
 
 # Translations
-*.mo
+*.mo-
 *.pot
 
 # Django stuff:
@@ -67,10 +67,11 @@ instance/
 # Sphinx documentation
 docs/_build/
 
-# PyBuilder
+# Output folder
 target/
 output/
 temp/
+data/
 
 # Jupyter Notebook
 .ipynb_checkpoints

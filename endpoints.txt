@@ -38,3 +38,5 @@ curl -K /c/NexusIQ/curl-parm.txt -X POST -d '{"components":[{"hash": "35566f5b19
 curl -K /c/NexusIQ/curl-parm.txt -X GET 'https://iqserver.standard.com/api/v2/vulnerabilities/CVE-2019-17571'
 
 GET /api/v2/reports/applications/{applicationInternalId}/history    # Reports history
+
+/rest/user/organization/7279bb379d0b4442a94b2cebdec459cc/query

@@ -29,9 +29,11 @@ for appWaiver in appWaivers:
 					finalReportRecord["policyViolationId"] = violation["policyViolationId"]
 					finalReportRecord["policyName"] = violation["policyName"]
 					waiver = violation["policyWaiver"]
-					finalReportRecord["scopeOwnerType"] = waiver["scopeOwnerType"]
-					finalReportRecord["scopeOwnerName"] = waiver["scopeOwnerName"]
-					finalReportRecord["dfference"] = days_since(waiver["createTime"][:10])
+					finalReportRecord["isObsolete"] = waiver["isObsolete"]
+					if waiver["isObsolete"]!= True:
+						finalReportRecord["scopeOwnerType"] = waiver["scopeOwnerType"]
+						finalReportRecord["scopeOwnerName"] = waiver["scopeOwnerName"]
+						finalReportRecord["dfference"] = days_since(waiver["createTime"][:10])
 					finalReportRecord["comment"] = waiver["comment"]
 					finalReport.append(finalReportRecord)
 
