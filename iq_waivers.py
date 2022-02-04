@@ -13,8 +13,9 @@ def days_since(d1):
     d2 = datetime.today()
     return abs((d2 - d1).days)
 
-appWaivers = iq_session.get(f'{iq_url}/api/v2/reports/components/waivers').json()["applicationWaivers"]
+appWaivers1 = iq_session.get(f'{iq_url}/api/v2/reports/components/waivers').json()
 
+appWaivers = appWaivers1["applicationWaivers"]
 for appWaiver in appWaivers:
 		publicId = appWaiver["application"]["publicId"]
 		for stage in appWaiver["stages"]:
@@ -37,5 +38,5 @@ for appWaiver in appWaivers:
 					finalReportRecord["comment"] = waiver["comment"]
 					finalReport.append(finalReportRecord)
 
-saveOutput("iq_waivers", appWaivers)
+saveOutput("iq_waivers", appWaivers1)
 savecsvreport("iq_waivers", finalReport)

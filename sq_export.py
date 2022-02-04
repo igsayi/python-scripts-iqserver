@@ -37,7 +37,7 @@ def saveOutput(file_name, d):
     fileout.close
 
 allApps=[]
-for i in range(2):
+for i in range(20):
     apps = sq_session.get(f'{iq_url}/sonarqube/api/components/search?qualifiers=TRK&ps=40&p={i+1}').json()["components"]
     allApps = allApps + apps
 
@@ -46,7 +46,9 @@ finalReport = []
 for app in allApps:
     #print("app: "+ app["key"])
     measures = {}
+    finalReportRecord = {}
     measures = sq_session.get(f'{iq_url}/sonarqube/api/components/app?component={app["key"]}').json()
+    print("measures: "+ str(measures))
     measures.update(measures["measures"])
     measures.pop("measures")
     measures.pop("key")
@@ -56,6 +58,21 @@ for app in allApps:
     measures.pop("q")
     measures.pop("fav")
     measures.pop("canMarkAsFavorite")
+    measures.setdefault("lines","")
+    measures.setdefault("coverage","")
+    measures.setdefault("duplicationDensity","")
+    measures.setdefault("issues","")
+    measures.setdefault("tests","")
+    # finalReportRecord["project"] = measures["project"]
+    # finalReportRecord["projectName"] = measures["projectName"]
+    # finalReportRecord["lines"] = measures["lines"]
+    # finalReportRecord["coverage"] = measures["coverage"]
+    # finalReportRecord["duplicationDensity"] = measures["duplicationDensity"]
+    # finalReportRecord["issues"] = measures["issues"]
+    # finalReportRecord["tests"] = measures["tests"]
+
     #print("measures: "+ str(measures))
     finalReport.append(measures)
 savecsvreport("sq_Report", finalReport)
+#saveOutput("sq_Report", finalReport)
+#saveOutput("sq_Report-measures", measures)

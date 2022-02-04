@@ -13,14 +13,14 @@ for app in apps:
     reportIds = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}').json()
     
     for reportId in reportIds:
-#        if reportId["stage"] != "release":
-#            continue
+        if reportId["stage"] != "release":
+            continue
 
         evalDate = reportId["evaluationDate"]
         repUrl   = reportId["reportDataUrl"]
 
-        rawComponents1 = iq_session.get(f'{iq_url}/{repUrl}').json() # this is BOM or raw report components
-        rawComponents = rawComponents1["components"]
+        rawComponents = iq_session.get(f'{iq_url}/{repUrl}').json()["components"] # this is BOM or raw report components
+
         for rawComponent in rawComponents:            
             component = {}
             component["organization"] = app["organization"]
@@ -39,5 +39,5 @@ for app in apps:
 
             componentReport.append(component)
             
-saveOutput("componentReport", rawComponents1)
-savecsvreport("iq_components", componentReport)
+#saveOutput("iq_components-Release-stage", rawComponents)
+savecsvreport("iq_components-Release-stage", componentReport)

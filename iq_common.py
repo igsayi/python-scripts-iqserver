@@ -6,7 +6,8 @@ import csv
 import os
 
 iq_session = requests.Session()
-uPass = getpass.getpass(prompt='Password: ', stream=None)
+uPass = 'Janu2022$'
+# uPass = getpass.getpass(prompt='Password: ', stream=None)
 iq_session.auth = requests.auth.HTTPBasicAuth(getpass.getuser(), uPass)
 iq_session.verify = 'hlblbclmp001-standard-com-chain.pem'
 iq_session.cookies.set('CLM-CSRF-TOKEN', 'api')
@@ -29,9 +30,14 @@ for otl in orgtagslist:
         remediatedTag = otl["id"]
     if otl["name"] == "Hosted":
         hostedTag = otl["id"]
+    if otl["name"] == "Existing Systems":
+        ExistingSystemTag = otl["id"]
+    if otl["name"] == "New Systems":
+        NewSystemTag = otl["id"]
 
-#apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=account-linking-service').json()["applications"]
-apps = iq_session.get(f'{iq_url}/api/v2/applications').json()["applications"]
+apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=Cloud-Acceleration-Team_service').json()["applications"]
+#apps = iq_session.get(f'{iq_url}/api/v2/applications?publicId=IDI-DIPOLI').json()["applications"]
+#apps = iq_session.get(f'{iq_url}/api/v2/applications').json()["applications"]
 
 # Enrich Apps
 for app in apps:
@@ -40,6 +46,9 @@ for app in apps:
     app["app_Distributed"] = ""
     app["app_remediated"] = ""
     app["app_hosted"] = ""
+    app["app_ExistingSystem"] = ""
+    app["app_NewSystem"] = ""    
+
     
     for apptag in app["applicationTags"]:
         if apptag["tagId"] == internalTag:
@@ -50,16 +59,20 @@ for app in apps:
            app["app_remediated"] = "Remediated"
         if apptag["tagId"] == hostedTag:
            app["app_hosted"] = "Hosted"
-    app.pop("organizationId")
+        if apptag["tagId"] == ExistingSystemTag:
+           app["app_ExistingSystem"] = "ExistingSystem"
+        if apptag["tagId"] == NewSystemTag:
+           app["app_NewSystem"] = "NewSystem"                      
+    #app.pop("organizationId")
     app.pop("contactUserName")
-    app.pop("applicationTags")
+    #app.pop("applicationTags")
     #app.pop("id")    
 
 def savecsvreport(file_name, csvrecords):
     if not os.path.exists("output"):
         os.mkdir("output")
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.csv'
-    report_data = open(reportfile, 'w', newline='')
+    report_data = open(reportfile, 'w', encoding='utf-8', newline='')
     csvwriter = csv.writer(report_data)
     if csvrecords:
         header = csvrecords[0].keys()
@@ -72,3 +85,10 @@ def saveOutput(file_name, d):
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.json'
     fileout = open(reportfile,"w")
     fileout.write(json.dumps(d, indent=4))
+    fileout.close
+
+def saveOutputxml(file_name, d):
+    reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.xml'
+    fileout = open(reportfile,"w")
+    fileout.write(d)
+    fileout.close
