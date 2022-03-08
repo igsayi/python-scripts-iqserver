@@ -10,8 +10,16 @@ urllib3.disable_warnings()
 sq_session = requests.Session()
 
 uPass = getpass.getpass(prompt='Password: ', stream=None)
+
 sq_session.auth = requests.auth.HTTPBasicAuth(getpass.getuser(), uPass)
 sq_session.verify = 0 
+
+compName = input('Project Name: ')
+#compName = "Adminease-Parent"
+if len(compName) > 0:
+    print("Searching for: "+ str(compName))
+else:
+    print("Running the Report for all applications")
 
 sq_session.headers.update({'XSRF-TOKEN': 'api'})
 
@@ -37,19 +45,25 @@ def saveOutput(file_name, d):
     fileout.close
 
 allApps=[]
-for i in range(20):
-    apps = sq_session.get(f'{iq_url}/sonarqube/api/components/search?qualifiers=TRK&ps=40&p={i+1}').json()["components"]
+for i in range(2):
+    if len(compName) > 0:
+        apps = sq_session.get(f'{iq_url}/sonarqube/api/components/search?qualifiers=TRK&ps=400&p={i+1}&q={compName}').json()["components"]
+    else:
+        apps = sq_session.get(f'{iq_url}/sonarqube/api/components/search?qualifiers=TRK&ps=400&p={i+1}').json()["components"]
     allApps = allApps + apps
 
 #print("apps: "+ str(apps))
 finalReport = []
 for app in allApps:
-    #print("app: "+ app["key"])
+    print("app: "+ app["key"])
     measures = {}
     finalReportRecord = {}
     measures = sq_session.get(f'{iq_url}/sonarqube/api/components/app?component={app["key"]}').json()
-    print("measures: "+ str(measures))
+    componentShow = sq_session.get(f'{iq_url}/sonarqube/api/components/show?component={app["key"]}').json()["component"]
+    #print("measures: "+ str(measures))
+    #print("componentShow: "+ str(componentShow))
     measures.update(measures["measures"])
+    measures.update(componentShow)
     measures.pop("measures")
     measures.pop("key")
     measures.pop("uuid")
@@ -63,16 +77,21 @@ for app in allApps:
     measures.setdefault("duplicationDensity","")
     measures.setdefault("issues","")
     measures.setdefault("tests","")
-    # finalReportRecord["project"] = measures["project"]
-    # finalReportRecord["projectName"] = measures["projectName"]
-    # finalReportRecord["lines"] = measures["lines"]
-    # finalReportRecord["coverage"] = measures["coverage"]
-    # finalReportRecord["duplicationDensity"] = measures["duplicationDensity"]
-    # finalReportRecord["issues"] = measures["issues"]
-    # finalReportRecord["tests"] = measures["tests"]
+    measures.setdefault("analysisDate","")
+    measures.setdefault("version","")
+    finalReportRecord["project"] = measures["project"]
+    finalReportRecord["projectName"] = measures["projectName"]
+    finalReportRecord["lines"] = measures["lines"]
+    finalReportRecord["coverage"] = measures["coverage"]
+    finalReportRecord["duplicationDensity"] = measures["duplicationDensity"]
+    finalReportRecord["issues"] = measures["issues"]
+    finalReportRecord["tests"] = measures["tests"]
+    finalReportRecord["analysisDate"] = measures["analysisDate"]
+    finalReportRecord["version"] = measures["version"]
 
     #print("measures: "+ str(measures))
-    finalReport.append(measures)
-savecsvreport("sq_Report", finalReport)
+    #finalReport.append(measures)
+    finalReport.append(finalReportRecord)
+savecsvreport("sq_Report"+compName, finalReport)
 #saveOutput("sq_Report", finalReport)
 #saveOutput("sq_Report-measures", measures)
