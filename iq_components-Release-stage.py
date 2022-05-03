@@ -25,6 +25,7 @@ for app in apps:
             component = {}
             component["organization"] = app["organization"]
             component["apppublicId"] = app["publicId"]
+            component["appExposure"] = app["appExposure"]
             component["Stage"] = reportId["stage"]
             component["EvalDate"] = evalDate
             component["hash"] = rawComponent["hash"]
