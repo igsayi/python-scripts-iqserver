@@ -1,7 +1,5 @@
-
-from iq_common import saveOutput as saveOutput
+#!/usr/bin/env python
 import math
-##################
 import requests
 import getpass
 from datetime import datetime
@@ -32,10 +30,6 @@ for otl in orgtagslist:
         internalTag = otl["id"]
     if otl["name"] == "Distributed":
         distributedTag = otl["id"]
-#    if otl["name"] == "Remediated":
-#        remediatedTag = otl["id"]
-#    if otl["name"] == "Hosted":
-#        hostedTag = otl["id"]
     if otl["name"] == "Existing Systems":
         ExistingSystemTag = otl["id"]
     if otl["name"] == "New Systems":
@@ -49,8 +43,6 @@ for app in apps:
     app["organization"] = orgs.get(app["organizationId"])
     app["app_internal"] = ""
     app["app_Distributed"] = ""
-#    app["app_remediated"] = ""
-#    app["app_hosted"] = ""
     app["app_ExistingSystem"] = ""
     app["app_NewSystem"] = ""    
     
@@ -61,10 +53,6 @@ for app in apps:
         if apptag["tagId"] == distributedTag:
            app["app_Distributed"] = "Distributed"
            app["appExposure"] = "External"
-#        if apptag["tagId"] == remediatedTag:
-#           app["app_remediated"] = "Remediated"
-#        if apptag["tagId"] == hostedTag:
-#           app["app_hosted"] = "Hosted"
         if apptag["tagId"] == ExistingSystemTag:
            app["app_ExistingSystem"] = "ExistingSystem"
         if apptag["tagId"] == NewSystemTag:
@@ -89,13 +77,6 @@ def savecsvreport(csvrecords):
     report_data.close()
 
 ##################
-def myFunc(e):
-  return e['openTime']
-
-def myFunc1(e):
-  return e['component']
-
-iq_url = "https://iqserver.standard.com"
 
 polviolationreport = []
 
@@ -127,7 +108,7 @@ for pol in pols:
     #        continue
 
         unsortedpolViolations = appViolation["policyViolations"] 
-        # polViolations.sort(key=myFunc)
+        
         sortedPolViolations = sorted(unsortedpolViolations, key = lambda i: (i['openTime'], i['component']["hash"])) 
         prevOpenTime = ""
         prevPackage = ""
@@ -175,17 +156,17 @@ print("Filedate is "+ fileDate)
 dfo = pd.read_csv('output/iq_master-file.csv')  
 df2 = pd.DataFrame.from_dict(polviolationreport)
 
-df_combine = pd.merge(dfo, df2, on='policyViolationId', how='outer', indicator=True)    # L-352 ; R-1376 ; Both-3948
+df_combine = pd.merge(dfo, df2, on='policyViolationId', how='outer', indicator=True)    
 
 for i in range(len(df_combine)):
-    if df_combine.loc[i, '_merge']=='left_only' and df_combine.loc[i, 'DaysToFix'] == -1:
+    if df_combine.loc[i, '_merge']=='left_only' and df_combine.loc[i, 'DaysToFix'] == -1:   # This set of violations are closed today
         closeDate = datetime.strptime(fileDate, "%Y%m%d")
         df_combine.loc[i, 'ClosedDate'] = closeDate
         openDate = datetime.strptime(df_combine.loc[i, 'openTime_x'][:10], "%Y-%m-%d")
         df_combine.loc[i, 'openTime_x'] = openDate
         df_combine.loc[i, 'DaysToFix'] = abs((openDate-closeDate).days)
         #print(i)
-    elif df_combine.loc[i, '_merge']=='right_only':
+    elif df_combine.loc[i, '_merge']=='right_only':                                         # This set of violations are newly opened today
         df_combine.loc[i, 'threatLevel_x'] = df_combine.loc[i, 'threatLevel_y']
         df_combine.loc[i, 'policyName_x'] = df_combine.loc[i, 'policyName_y']
         df_combine.loc[i, 'name_x'] = df_combine.loc[i, 'name_y']
@@ -196,7 +177,7 @@ for i in range(len(df_combine)):
         df_combine.loc[i, 'openTime_x'] = openDate
         df_combine.loc[i, 'CVE_x'] = df_combine.loc[i, 'CVE_y']
         df_combine.loc[i, 'DaysToFix'] = -1
-    #else:
+    #else:                                                                                  # This set of violations are closed previously or not changed
         #openDate = datetime.strptime(df_combine.loc[i, 'openTime_x'][:10], "%Y-%m-%d")
         #df_combine.loc[i, 'openTime_x'] = openDate
 
@@ -207,6 +188,4 @@ df_combine.to_excel('output/iq_master-file.xlsx', header=['threatLevel', 'policy
 df_combine.to_csv('output/iq_master-file.csv', header=['threatLevel', 'policyName', 'name', 'OrgName', 'appExposure', 'displayName', 'openTime', 'CVE', 'policyViolationId', 'ClosedDate', 'DaysToFix'], index=False)
 
 savecsvreport(polviolationreport)
-#saveOutput("iq_policyViolations-from-policies-pols", pols)
-
 
