@@ -1,44 +1,54 @@
+import os.path
+
+from iq_common import apps as apps
 from iq_common import iq_session as iq_session
 from iq_common import savecsvreport as savecsvreport
 from iq_common import saveOutput as saveOutput
-from iq_common import apps as apps
 
-iq_url = "https://iqserver.standard.com"
 
-componentReport = []
+def main():
 
-for app in apps:
-    app_id = app["id"]
+    iq_url = "https://iqserver.standard.com"
 
-    reportIds = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}').json()
-    
-    for reportId in reportIds:
-        if reportId["stage"] != "release":
-            continue
+    componentReport = []
 
-        evalDate = reportId["evaluationDate"]
-        repUrl   = reportId["reportDataUrl"]
+    for app in apps:
+        app_id = app["id"]
 
-        rawComponents = iq_session.get(f'{iq_url}/{repUrl}').json()["components"] # this is BOM or raw report components
+        reportIds = iq_session.get(
+            f"{iq_url}/api/v2/reports/applications/{app_id}").json()
 
-        for rawComponent in rawComponents:            
-            component = {}
-            component["organization"] = app["organization"]
-            component["apppublicId"] = app["publicId"]
-            component["appExposure"] = app["appExposure"]
-            component["Stage"] = reportId["stage"]
-            component["EvalDate"] = evalDate
-            component["hash"] = rawComponent["hash"]
-            component["displayName"] = rawComponent["displayName"]
-            component["packageUrl"] = rawComponent["packageUrl"]
-            component["pathname"] = str(rawComponent["pathnames"])[0:500]     
-            component["proprietary"] = rawComponent["proprietary"]                                
-            component["matchState"] = rawComponent["matchState"]
-            if rawComponent["matchState"] != "unknown":
-                component["format"] = rawComponent["componentIdentifier"]["format"]
-                #component["extension"] = str(rawComponent["componentIdentifier"]["coordinates"])
+        for reportId in reportIds:
+            if reportId["stage"] != "release":
+                continue
 
-            componentReport.append(component)
-            
-#saveOutput("iq_components-Release-stage", rawComponents)
-savecsvreport("iq_components-Release-stage", componentReport)
+            evalDate = reportId["evaluationDate"]
+            repUrl = reportId["reportDataUrl"]
+
+            # this is BOM or raw report components
+            rawComponents1 = iq_session.get(f"{iq_url}/{repUrl}").json()
+            rawComponents = rawComponents1["components"]
+            for rawComponent in rawComponents:
+                component = {}
+                component["organization"] = app["organization"]
+                component["apppublicId"] = app["publicId"]
+                component["Stage"] = reportId["stage"]
+                component["EvalDate"] = evalDate
+                component["hash"] = rawComponent["hash"]
+                component["displayName"] = rawComponent["displayName"]
+                component["packageUrl"] = rawComponent["packageUrl"]
+                component["pathname"] = str(rawComponent["pathnames"])[0:500]
+                component["proprietary"] = rawComponent["proprietary"]
+                component["matchState"] = rawComponent["matchState"]
+                if rawComponent["matchState"] != "unknown":
+                    component["format"] = rawComponent["componentIdentifier"]["format"]
+                    # component["extension"] = str(rawComponent["componentIdentifier"]["coordinates"])
+
+                componentReport.append(component)
+
+    savecsvreport(os.path.splitext(
+        os.path.basename(__file__))[0], componentReport)
+
+
+if __name__ == "__main__":
+    main()
