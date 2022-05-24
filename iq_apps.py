@@ -1,6 +1,10 @@
-from iq_common import savecsvreport as savecsvreport
-from iq_common import saveOutput as saveOutput
 from iq_common import apps as apps
- 
-savecsvreport("appReport", apps)
-# saveOutput("appReport", apps)
+from iq_common import savecsvreport as savecsvreport
+
+
+def main():
+    savecsvreport("appReport", apps)
+
+
+if __name__ == "__main__":
+    main()
