@@ -12,8 +12,8 @@ from requests import Session
 from requests.auth import HTTPBasicAuth
 
 iq_session = Session()
-# iq_session.auth = HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt='Password: ', stream=None))
-iq_session.auth = HTTPBasicAuth("LfDJDrrM", "Z9jaiFC9n4F8WkKBuHNQeS2zZggYvRIxTQ0vnRXiM58Z")
+iq_session.auth = HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
+
 iq_session.verify = "hlblbclmp001-standard-com-chain.pem"
 iq_session.cookies.set("CLM-CSRF-TOKEN", "api")
 iq_session.headers.update({"X-CSRF-TOKEN": "api"})
