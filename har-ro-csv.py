@@ -33,7 +33,10 @@ interested_headers = {
 final_report = []
 for har_entry in har_json["log"]["entries"]:
     report_record = {}
+
     report_record["url_name"] = har_entry["request"]["url"]
+    report_record["resource_type"] = har_entry["_resourceType"]
+    report_record["priority"] = har_entry["_priority"]
 
     for har_header in har_entry["response"]["headers"]:
         if har_header["name"].upper() in interested_headers:
