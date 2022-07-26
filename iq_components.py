@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os.path
 
 from iq_common import apps as apps

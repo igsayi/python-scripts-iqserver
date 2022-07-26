@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from iq_common import apps as apps
 from iq_common import savecsvreport as savecsvreport
 

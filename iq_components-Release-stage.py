@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os.path
 
 from iq_common import apps as apps
@@ -15,8 +16,7 @@ def main():
     for app in apps:
         app_id = app["id"]
 
-        reportIds = iq_session.get(
-            f"{iq_url}/api/v2/reports/applications/{app_id}").json()
+        reportIds = iq_session.get(f"{iq_url}/api/v2/reports/applications/{app_id}").json()
 
         for reportId in reportIds:
             if reportId["stage"] != "release":
@@ -46,8 +46,7 @@ def main():
 
                 componentReport.append(component)
 
-    savecsvreport(os.path.splitext(
-        os.path.basename(__file__))[0], componentReport)
+    savecsvreport(os.path.splitext(os.path.basename(__file__))[0], componentReport)
 
 
 if __name__ == "__main__":
