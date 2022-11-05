@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os.path
 
 from iq_common import apps as apps
@@ -14,7 +15,7 @@ def main():
     for app in apps:
         app_id = app["id"]
 
-        reportIds = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}').json()
+        reportIds = iq_session.get(f"{iq_url}/api/v2/reports/applications/{app_id}").json()
 
         for reportId in reportIds:
             if reportId["stage"] != "release":
@@ -23,7 +24,7 @@ def main():
             repUrl = reportId["reportDataUrl"]
 
             # this is BOM or raw report components
-            rawComponents = iq_session.get(f'{iq_url}/{repUrl}').json()["components"]
+            rawComponents = iq_session.get(f"{iq_url}/{repUrl}").json()["components"]
 
             for rawComponent in rawComponents:
 
@@ -46,13 +47,13 @@ def main():
                         compLicense = {}
                         compLicense["organization"] = app["organization"]
                         compLicense["apppublicId"] = app["publicId"]
-                        #compLicense["Stage"] = reportId["stage"]
-                        #compLicense["evaluationDate"] = reportId["evaluationDate"]
-                        #compLicense["reportDataUrl"] = reportId["reportDataUrl"]
-                        #compLicense["hash"] = rawComponent["hash"]
+                        # compLicense["Stage"] = reportId["stage"]
+                        # compLicense["evaluationDate"] = reportId["evaluationDate"]
+                        # compLicense["reportDataUrl"] = reportId["reportDataUrl"]
+                        # compLicense["hash"] = rawComponent["hash"]
                         compLicense["displayName"] = rawComponent["displayName"]
                         compLicense["packageUrl"] = rawComponent["packageUrl"]
-                        #compLicense["pathname"] = str(rawComponent["pathnames"])[0:500]
+                        # compLicense["pathname"] = str(rawComponent["pathnames"])[0:500]
                         compLicense["proprietary"] = rawComponent["proprietary"]
                         compLicense["matchState"] = rawComponent["matchState"]
 
