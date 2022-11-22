@@ -4,7 +4,7 @@ import sys
 
 import pandas as pd
 
-os.chdir("c:/Temp/work/RASP-POC/Sayi/json-files")
+os.chdir("c:/Temp/work/RASP-POC/20221121")
 directory_list = os.listdir()
 rasplogsList = []
 for datafile in directory_list:
