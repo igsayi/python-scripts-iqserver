@@ -1,22 +1,33 @@
-from iq_common import iq_session as iq_session
-from iq_common import saveOutputxml as saveOutputxml
-from iq_common import apps as apps
- 
-iq_url = "https://iqserver-dev.standard.com"
+import getpass
 
-for app in apps:
-    app_id = app["id"]
-    stageId = "release"
-    iq_session.headers.update({'Content-Type': 'application/xml'})
-    
-    file_name = "cycloneDx-20210517"
-    reportfile = f'output/{file_name}.xml'
-    fileout = open(reportfile,"r")
-    d = fileout.read()
-    fileout.close
+import requests
+from requests import Session
+from requests.auth import HTTPBasicAuth
 
-    source = "cyclone"
-    r = iq_session.post(f'{iq_url}/api/v2/scan/applications/{app_id}/sources/{source}?stageId={stageId}', data=d)
+iq_session = Session()
+iq_session.auth = requests.auth.HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
+iq_session.verify = False
+iq_session.cookies.set("CLM-CSRF-TOKEN", "api")
+iq_session.headers.update({"X-CSRF-TOKEN": "api"})
+iq_url = "https://iqserver.standard.com"
 
-    print(r.text)
-    #saveOutputxml("cycloneDx", r.text)
+# for app in apps:
+app_public_id = "kong-enterprise-edition"
+app_id = iq_session.get(f"{iq_url}/api/v2/applications?publicId={app_public_id}").json()["applications"][0]["id"]
+stageId = "release"
+iq_session.headers.update({"Content-Type": "application/xml"})
+
+file_name = "kong-cycloneDX"
+reportfile = f"output/{file_name}.xml"
+fileout = open(reportfile, encoding="utf-8-sig")
+d = fileout.read()
+fileout.close
+
+source = "cyclone"
+post_url = f"{iq_url}/api/v2/scan/applications/{app_id}/sources/{source}?stageId={stageId}"
+print(post_url)
+# print(d)
+r = iq_session.post(f"{iq_url}/api/v2/scan/applications/{app_id}/sources/{source}?stageId={stageId}", data=d)
+
+print(r.text)
+# saveOutputxml("cycloneDx", r.text)
