@@ -9,6 +9,15 @@ try:
 except:
     access_key = winreg.CreateKey(access_registry, keyval)
 
+
+print("QueryValueEx - Before: " + str(winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0]))
+
+if winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0] == 1:
+    winreg.SetValueEx(access_key, "DisableFileSyncNGSC", 0, winreg.REG_DWORD, 0)
+    print("QueryValueEx - After: " + str(winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0]))
+winreg.CloseKey(access_key)
+
+
 # accessing the key to open the registry directories under
 # access_key1 = winreg.OpenKey(access_registry, r"SOFTWARE\Microsoft\Windows\CurrentVersion")
 # for n in range(20):
@@ -19,13 +28,6 @@ except:
 #         break
 
 # print("QueryInfoKey: " + str(winreg.QueryInfoKey(access_key)))
-
-print("QueryValueEx: " + str(winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0]))
-
-if winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0] == 1:
-    winreg.SetValueEx(access_key, "DisableFileSyncNGSC", 0, winreg.REG_DWORD, 0)
-    print("QueryValueEx: " + str(winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0]))
-winreg.CloseKey(access_key)
 
 # keyVal = r"Software\Microsoft\Internet Explorer\Main"
 # try:
