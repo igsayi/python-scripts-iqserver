@@ -42,7 +42,7 @@ def main():
     sq_url = "https://sonarqube.standard.com"
 
     compName = input("Project Name: ")
-    # compName = "Adminease-Parent"
+    #    compName = "eb-gac-ggf-group-summary-api"
     if len(compName) > 0:
         print("Searching for: " + str(compName))
     else:
@@ -64,8 +64,8 @@ def main():
         print("app: " + app["key"])
         measures = {}
         finalReportRecord = {}
-        measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?component={app["key"]}').json()
-        componentShow = sq_session.get(f'{sq_url}/sonarqube/api/components/show?component={app["key"]}').json()["component"]
+        measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?branch=develop&component={app["key"]}').json()
+        componentShow = sq_session.get(f'{sq_url}/sonarqube/api/components/show?branch=develop&component={app["key"]}').json()["component"]
         # print("measures: "+ str(measures))
         # print("componentShow: "+ str(componentShow))
         measures.update(measures["measures"])
