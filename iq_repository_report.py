@@ -1,13 +1,24 @@
 import getpass
 import json
+import os
 
 import pandas as pd
-import requests
+from dotenv import load_dotenv
+from requests import Session
+from requests.auth import HTTPBasicAuth
+from requests.packages import urllib3
+
+load_dotenv()
+iq_user = os.getenv("IQ_USERNAME")
+iq_token = os.getenv("IQ_TOKEN")
+iq_url = os.getenv("IQ_URL")
 
 # pylint: disable=maybe-no-member
-requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
-iq_session = requests.Session()
-iq_session.auth = requests.auth.HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+iq_session = Session()
+# iq_session.auth = HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
+iq_session.auth = HTTPBasicAuth(iq_user, iq_token)
 
 iq_session.verify = False
 iq_session.cookies.set("CLM-CSRF-TOKEN", "api")
