@@ -4,7 +4,6 @@ import os.path
 from iq_common import apps as apps
 from iq_common import iq_session as iq_session
 from iq_common import savecsvreport as savecsvreport
-from iq_common import saveOutput as saveOutput
 
 
 def main():
@@ -32,6 +31,7 @@ def main():
                 component = {}
                 component["organization"] = app["organization"]
                 component["apppublicId"] = app["publicId"]
+                component["appExposure"] = app["appExposure"]
                 component["Stage"] = reportId["stage"]
                 component["EvalDate"] = evalDate
                 component["hash"] = rawComponent["hash"]
@@ -54,7 +54,6 @@ def main():
                 componentReport.append(component)
 
     savecsvreport(os.path.splitext(os.path.basename(__file__))[0], componentReport)
-    # saveOutput(os.path.splitext(os.path.basename(__file__))[0], rawComponents1)
 
 
 if __name__ == "__main__":

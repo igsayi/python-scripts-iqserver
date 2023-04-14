@@ -4,7 +4,6 @@ import os.path
 from iq_common import apps as apps
 from iq_common import iq_session as iq_session
 from iq_common import savecsvreport as savecsvreport
-from iq_common import saveOutput as saveOutput
 
 
 def main():
@@ -32,6 +31,7 @@ def main():
                 component = {}
                 component["organization"] = app["organization"]
                 component["apppublicId"] = app["publicId"]
+                component["appExposure"] = app["appExposure"]
                 component["Stage"] = reportId["stage"]
                 component["EvalDate"] = evalDate
                 component["hash"] = rawComponent["hash"]
@@ -40,9 +40,16 @@ def main():
                 component["pathname"] = str(rawComponent["pathnames"])[0:500]
                 component["proprietary"] = rawComponent["proprietary"]
                 component["matchState"] = rawComponent["matchState"]
+                component["format"] = ""
+                component["directDependency"] = ""
+                component["parentComponentPurls"] = ""
                 if rawComponent["matchState"] != "unknown":
                     component["format"] = rawComponent["componentIdentifier"]["format"]
                     # component["extension"] = str(rawComponent["componentIdentifier"]["coordinates"])
+                if "dependencyData" in rawComponent:
+                    component["directDependency"] = rawComponent["dependencyData"]["directDependency"]
+                    if "parentComponentPurls" in rawComponent["dependencyData"]:
+                        component["parentComponentPurls"] = str(rawComponent["dependencyData"]["parentComponentPurls"])
 
                 componentReport.append(component)
 

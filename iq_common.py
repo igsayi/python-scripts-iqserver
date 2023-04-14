@@ -48,6 +48,7 @@ for orgtag in iq_session.get(f"{iq_url}/api/v2/organizations/ROOT_ORGANIZATION_I
 # Enrich Apps
 for app in apps:
     app["organization"] = orgs.get(app["organizationId"])
+    app["appExposure"] = ""
     for apptag in app["applicationTags"]:
         match orgtags.get(apptag["tagId"]):
             case "Internal":
