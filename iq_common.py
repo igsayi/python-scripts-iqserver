@@ -20,7 +20,7 @@ iq_session.auth = HTTPBasicAuth(iq_user, iq_token)
 iq_session.verify = "hlblbclmp001-standard-com-chain.pem"
 iq_session.cookies.set("CLM-CSRF-TOKEN", "api")
 iq_session.headers.update({"X-CSRF-TOKEN": "api"})
-# iq_url = "https://iqserver.standard.com"
+
 
 try:
     # response = iq_session.get(f"{iq_url}/api/v2/applications?publicId=crm-gac-accounts-service")
@@ -54,10 +54,6 @@ for app in apps:
                 app["appExposure"] = "Internal"
             case "Distributed":
                 app["appExposure"] = "External"
-            case "Existing Systems":
-                app["appPolicy"] = "Existing Systems"
-            case "New Systems":
-                app["appPolicy"] = "New Systems"
     app.pop("contactUserName")
     app.pop("applicationTags")
 
