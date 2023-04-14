@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import os.path
 
 from iq_common import apps as apps
@@ -11,7 +12,7 @@ def main():
     finalReport = []
     for app in apps:
         app_id = app["id"]
-        reports = iq_session.get(f'{iq_url}/api/v2/reports/applications/{app_id}').json()
+        reports = iq_session.get(f"{iq_url}/api/v2/reports/applications/{app_id}").json()
         if reports is not None and len(reports) > 0:
             for report in reports:
                 # if reportId["stage"] != "release":
