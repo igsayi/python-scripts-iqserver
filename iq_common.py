@@ -4,16 +4,38 @@ import json
 import os
 from datetime import datetime
 
+import requests
+from dotenv import load_dotenv
 from requests import Session
 from requests.auth import HTTPBasicAuth
 
-iq_session = Session()
-iq_session.auth = HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
+load_dotenv()
+iq_user = os.getenv("IQ_USERNAME")
+iq_token = os.getenv("IQ_TOKEN")
+iq_url = os.getenv("IQ_URL")
 
+iq_session = Session()
+# iq_session.auth = HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
+iq_session.auth = HTTPBasicAuth(iq_user, iq_token)
 iq_session.verify = "hlblbclmp001-standard-com-chain.pem"
 iq_session.cookies.set("CLM-CSRF-TOKEN", "api")
 iq_session.headers.update({"X-CSRF-TOKEN": "api"})
-iq_url = "https://iqserver.standard.com"
+# iq_url = "https://iqserver.standard.com"
+
+try:
+    # response = iq_session.get(f"{iq_url}/api/v2/applications?publicId=crm-gac-accounts-service")
+    response = iq_session.get(f"{iq_url}/api/v2/applications")
+    response.raise_for_status()
+
+except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+    print("Cannot find IQ Server, check URL")
+    exit()
+
+except requests.exceptions.HTTPError:
+    print("Could not authenticate, check username and password")
+    exit()
+
+apps = response.json()["applications"]
 
 orgs = {}
 for org in iq_session.get(f"{iq_url}/api/v2/organizations").json()["organizations"]:
@@ -22,9 +44,6 @@ for org in iq_session.get(f"{iq_url}/api/v2/organizations").json()["organization
 orgtags = {}
 for orgtag in iq_session.get(f"{iq_url}/api/v2/organizations/ROOT_ORGANIZATION_ID").json()["tags"]:
     orgtags.update({orgtag["id"]: orgtag["name"]})
-
-# apps = iq_session.get(f"{iq_url}/api/v2/applications?publicId=IDI-DIPOLI").json()["applications"]
-apps = iq_session.get(f"{iq_url}/api/v2/applications").json()["applications"]
 
 # Enrich Apps
 for app in apps:
