@@ -4,6 +4,7 @@ import json
 import os
 from datetime import datetime
 
+import pandas as pd
 import requests
 from dotenv import load_dotenv
 from requests import Session
@@ -86,3 +87,9 @@ def saveOutputxml(file_name, d):
     fileout = open(reportfile, "w")
     fileout.write(d)
     fileout.close
+
+
+def saveExcelReport(file_name, d):
+    df = pd.DataFrame.from_dict(d)
+    reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.xlsx'
+    df.to_excel(reportfile, index=False)

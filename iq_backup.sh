@@ -6,4 +6,5 @@ python iq_components-Release-stage.py
 python iq_licensedata.py
 python iq_reports-history.py
 python iq_reports.py
-python iq_waivers.py
+python iq_policy_waivers.py
+python iq_component_waivers.py
