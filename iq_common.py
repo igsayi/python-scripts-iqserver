@@ -93,3 +93,7 @@ def saveExcelReport(file_name, d):
     df = pd.DataFrame.from_dict(d)
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.xlsx'
     df.to_excel(reportfile, index=False)
+
+
+if __name__ == "__main__":
+    saveExcelReport("appReport", apps)
