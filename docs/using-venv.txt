@@ -1,0 +1,9 @@
+virtualenv -p python3 venv
+source ./venv/scripts/activate 
+
+pip3 freeze > requirements.txt
+
+pipdeptree -f | tee locked-requirements.txt
+
+deactivate
+rm -rf venv
