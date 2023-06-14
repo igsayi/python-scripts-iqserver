@@ -6,7 +6,7 @@ import pandas as pd
 
 # datafile = "output/portalacc.standard.com.har"
 
-os.chdir("C:\Temp\Downloads\har")
+os.chdir("C:\Temp\Downloads\har\har1")
 directory_list = os.listdir()
 for datafile in directory_list:
     if not datafile.endswith(".har"):
@@ -42,13 +42,10 @@ for datafile in directory_list:
         report_record = {}
 
         report_record["url_name"] = har_entry["request"]["url"]
-        report_record["resource_type"] = har_entry["_resourceType"]
-        report_record["priority"] = har_entry["_priority"]
-        if "connection" in har_entry:
-            report_record["connection"] = har_entry["connection"]
-        else:
-            report_record["connection"] = ""
-        report_record["serverIPAddress"] = har_entry["serverIPAddress"]
+        report_record["resource_type"] = har_entry.get("_resourceType","")
+        report_record["priority"] = har_entry.get("_priority","")
+        report_record["connection"] = har_entry.get("connection", "")
+        report_record["serverIPAddress"] = har_entry.get("serverIPAddress", "")
 
         for har_header in har_entry["response"]["headers"]:
             if har_header["name"].upper() in interested_headers:
