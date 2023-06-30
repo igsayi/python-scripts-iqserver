@@ -73,13 +73,14 @@ curl -K /c/NexusIQ/curl-parm.txt -X POST -d '{"scanId":"bef0cd8ea44d4284bbfb465b
 
 https://iqserver.standard.com/api/v2/reports/applications/705a3a81fc0d46d9a5ccb86a9a0c1d3b/history
 
-https://iqserver.standard.com/api/v2/roleMemberships/global
-
-https://iqserver.standard.com/api/v2/roleMemberships/organization/ROOT_ORGANIZATION_ID
-
 https://iqserver.standard.com/api/v2/organizations
 
 https://iqserver.standard.com//api/v2/users?realm=5cfad0999d804a71a3f94b013496d936
 https://iqserver.standard.com/rest/config/ldap
 https://iqserver.standard.com/api/v2/roleMemberships/global
 https://iqserver.standard.com/api/v2/roleMemberships/organization/ROOT_ORGANIZATION_ID
+
+https://iqserver.standard.com/api/v2/roles
+
+https://iqserver.standard.com/rest/membershipMapping/organization/84ee4343c8844b5ba28101387e5ac4c2
+https://iqserver.standard.com/rest/membershipMapping/organization/ROOT_ORGANIZATION_ID
