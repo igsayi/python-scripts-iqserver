@@ -84,3 +84,12 @@ https://iqserver.standard.com/api/v2/roles
 
 https://iqserver.standard.com/rest/membershipMapping/organization/84ee4343c8844b5ba28101387e5ac4c2
 https://iqserver.standard.com/rest/membershipMapping/organization/ROOT_ORGANIZATION_ID
+
+DELETE /api/v2/roleMemberships/application/{applicationInternalId}/role/{roleId}/user/{userName}
+DELETE /api/v2/roleMemberships/organization/{organizationId}/role/{roleId}/user/{userName}
+DELETE /api/v2/roleMemberships/organization/{organizationId}/role/{roleId}/group/{groupName}
+
+
+curl -K /c/NexusIQ/curl-parm-dev.txt -X POST "https://iqserver-dev.standard.com:8071/tasks/purgeObsoleteReports"
+
+curl -K /c/NexusIQ/curl-parm.txt -X POST "https://iqserver.standard.com:8071/tasks/purgeObsoleteReports"

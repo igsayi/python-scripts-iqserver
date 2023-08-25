@@ -21,10 +21,11 @@ iq_session.auth = HTTPBasicAuth(iq_user, iq_token)
 iq_session.verify = "hlblbclmp001-standard-com-chain.pem"
 iq_session.cookies.set("CLM-CSRF-TOKEN", "api")
 iq_session.headers.update({"X-CSRF-TOKEN": "api"})
+iq_session.headers.update({"Content-Type": "application/json"})
 
 
 try:
-    # response = iq_session.get(f"{iq_url}/api/v2/applications?publicId=crm-gac-accounts-service")
+    # response = iq_session.get(f"{iq_url}/api/v2/applications?publicId=DataScience_data-science-api")
     response = iq_session.get(f"{iq_url}/api/v2/applications")
     response.raise_for_status()
 
@@ -42,6 +43,10 @@ orgs = {}
 for org in iq_session.get(f"{iq_url}/api/v2/organizations").json()["organizations"]:
     orgs.update({org["id"]: org["name"]})
 
+roles = {}
+for role in iq_session.get(f"{iq_url}/api/v2/roles").json()["roles"]:
+    roles.update({role["id"]: role["name"]})
+
 orgtags = {}
 for orgtag in iq_session.get(f"{iq_url}/api/v2/organizations/ROOT_ORGANIZATION_ID").json()["tags"]:
     orgtags.update({orgtag["id"]: orgtag["name"]})
@@ -58,6 +63,10 @@ for app in apps:
                 app["appExposure"] = "External"
     app.pop("contactUserName")
     app.pop("applicationTags")
+
+apps1: dict[str, dict] = {}
+for app in apps:
+    apps1.update({app["id"]: app})
 
 
 def savecsvreport(file_name, csvrecords):
