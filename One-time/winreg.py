@@ -16,6 +16,22 @@ if winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0] == 1:
     winreg.SetValueEx(access_key, "DisableFileSyncNGSC", 0, winreg.REG_DWORD, 0)
     print("QueryValueEx - After: " + str(winreg.QueryValueEx(access_key, "DisableFileSyncNGSC")[0]))
 winreg.CloseKey(access_key)
+#############################################
+
+access_registry1 = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+keyval1 = r"Software\Policies\Mozilla\Firefox"
+try:
+    access_key1 = winreg.OpenKey(access_registry1, keyval1, 0, winreg.KEY_ALL_ACCESS)
+except:
+    access_key1 = winreg.CreateKey(access_registry1, keyval1)
+
+
+print("QueryValueEx - Before: " + str(winreg.QueryValueEx(access_key1, "DisableFirefoxAccounts")[0]))
+
+if winreg.QueryValueEx(access_key1, "DisableFirefoxAccounts")[0] == 1:
+    winreg.SetValueEx(access_key1, "DisableFirefoxAccounts", 0, winreg.REG_DWORD, 0)
+    print("QueryValueEx - After: " + str(winreg.QueryValueEx(access_key1, "DisableFirefoxAccounts")[0]))
+winreg.CloseKey(access_key1)
 
 
 # accessing the key to open the registry directories under
