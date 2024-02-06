@@ -3,11 +3,10 @@ import os.path
 
 from iq_common import apps as apps
 from iq_common import iq_session as iq_session
-from iq_common import savecsvreport as savecsvreport
+from iq_common import saveExcelReport as saveExcelReport
 
 
 def main():
-
     iq_url = "https://iqserver.standard.com"
     finalReport = []
     for app in apps:
@@ -24,7 +23,7 @@ def main():
                 finalReportrecord["reportDataUrl"] = report["reportDataUrl"]
                 finalReport.append(dict(finalReportrecord))
 
-    savecsvreport(os.path.splitext(os.path.basename(__file__))[0], finalReport)
+    saveExcelReport(os.path.splitext(os.path.basename(__file__))[0], finalReport)
 
 
 if __name__ == "__main__":

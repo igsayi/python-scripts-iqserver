@@ -25,7 +25,7 @@ iq_session.headers.update({"Content-Type": "application/json"})
 
 
 try:
-    # response = iq_session.get(f"{iq_url}/api/v2/applications?publicId=DataScience_data-science-api")
+    # response = iq_session.get(f"{iq_url}/api/v2/applications?publicId=account-linking-service")
     response = iq_session.get(f"{iq_url}/api/v2/applications")
     response.raise_for_status()
 

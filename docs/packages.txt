@@ -1,0 +1,18 @@
+python packages
+
+pendulum - date and timezones
+pypdf - split, merge..
+icecream - debugging easier - print
+loguru - simplified logging
+rich - render markdown, tables, progress
+argparse - parser for command-line options
+tqdm - "progress" - instantly make your loops show a smart progress meter
+Xarray - multi dimnsional array
+Polars - dataframe library
+seaborn - statisticali visualization - matplot
+result - railroad oriented program
+pydantic - data validation library; works with type annotations
+FastAPI - 
+sqlmodel - object relational model
+httpx - requests replacement - async support; 
+python-dotenv

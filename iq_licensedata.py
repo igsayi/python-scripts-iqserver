@@ -3,11 +3,10 @@ import os.path
 
 from iq_common import apps as apps
 from iq_common import iq_session as iq_session
-from iq_common import savecsvreport as savecsvreport
+from iq_common import saveExcelReport as saveExcelReport
 
 
 def main():
-
     iq_url = "https://iqserver.standard.com"
 
     licensedataReport = []
@@ -27,7 +26,6 @@ def main():
             rawComponents = iq_session.get(f"{iq_url}/{repUrl}").json()["components"]
 
             for rawComponent in rawComponents:
-
                 complicenseData = rawComponent["licenseData"]
                 if complicenseData is not None:
                     declaredLicenseName = ""
@@ -74,7 +72,7 @@ def main():
                     # compLicense["licenseThreatGroupLevel"] = str(licenseThreatGroupLevel)[2:]
                     # compLicense["licenseThreatGroupCategory"] = str(licenseThreatGroupCategory)[2:]
                     #
-    savecsvreport(os.path.splitext(os.path.basename(__file__))[0], licensedataReport)
+    saveExcelReport(os.path.splitext(os.path.basename(__file__))[0], licensedataReport)
 
 
 if __name__ == "__main__":
