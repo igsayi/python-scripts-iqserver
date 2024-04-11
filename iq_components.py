@@ -17,8 +17,8 @@ def main():
         reportIds = iq_session.get(f"{iq_url}/api/v2/reports/applications/{app_id}").json()
 
         for reportId in reportIds:
-            # if reportId["stage"] != "release":
-            #    continue
+            if reportId["stage"] != "release":
+                continue
 
             evalDate = reportId["evaluationDate"]
             repUrl = reportId["reportDataUrl"]
