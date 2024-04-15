@@ -15,4 +15,12 @@ pydantic - data validation library; works with type annotations
 FastAPI - 
 sqlmodel - object relational model
 httpx - requests replacement - async support; 
+pillow - library for image processing in Python.
+Scrapy - web scraping and data extraction processes. https://hackr.io/blog/python-web-scraping-guide
+BeautifulSoup - scraping information from web pages, to parse and navigate HTML and XML documents.
+Faker - can generate random data like names, addresses, emails, countries, text, URLs, etc. 
+
+
+pyautogui - control the mouse and keyboard to automate interactions
+
 python-dotenv

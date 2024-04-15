@@ -1,4 +1,5 @@
 virtualenv -p python3 venv
+
 source ./venv/scripts/activate 
 
 pip3 install --trusted-host nexus.standard.com -i https://nexus.standard.com/nexus/repository/pypi/simple/ -r requirements_input.txt
@@ -9,3 +10,9 @@ pipdeptree -f | tee locked-requirements.txt
 
 deactivate
 rm -rf venv
+=================
+
+# Windows
+# You can also use `py -3 -m venv .venv`
+python -m venv .venv
+
