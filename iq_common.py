@@ -10,10 +10,13 @@ from dotenv import load_dotenv
 from requests import Session
 from requests.auth import HTTPBasicAuth
 
-load_dotenv()
-iq_user = os.getenv("IQ_USERNAME")
-iq_token = os.getenv("IQ_TOKEN")
-iq_url = os.getenv("IQ_URL")
+if load_dotenv():
+    iq_user: str = os.getenv("IQ_USERNAME", "")
+    iq_token: str = os.getenv("IQ_TOKEN", "")
+    iq_url: str = os.getenv("IQ_URL", "")
+else:
+    print("Cannot find IQ .env file")
+    exit()
 
 iq_session = Session()
 # iq_session.auth = HTTPBasicAuth(getpass.getuser(), getpass.getpass(prompt="Password: ", stream=None))
@@ -72,7 +75,6 @@ for app in apps:
 def savecsvreport(file_name, csvrecords):
     if not os.path.exists("output"):
         os.mkdir("output")
-    # file_name = os.path.splitext(os.path.basename(__file__))[0]
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.csv'
     report_data = open(reportfile, "w", encoding="utf-8", newline="")
     csvwriter = csv.writer(report_data)
@@ -85,6 +87,8 @@ def savecsvreport(file_name, csvrecords):
 
 
 def saveOutput(file_name, d):
+    if not os.path.exists("output"):
+        os.mkdir("output")
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.json'
     fileout = open(reportfile, "w")
     fileout.write(json.dumps(d, indent=4))
@@ -92,6 +96,8 @@ def saveOutput(file_name, d):
 
 
 def saveOutputxml(file_name, d):
+    if not os.path.exists("output"):
+        os.mkdir("output")
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.xml'
     fileout = open(reportfile, "w")
     fileout.write(d)

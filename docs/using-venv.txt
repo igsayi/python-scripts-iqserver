@@ -15,4 +15,5 @@ rm -rf venv
 # Windows
 # You can also use `py -3 -m venv .venv`
 python -m venv .venv
-
+source .venv/Scripts/activate
+pip install -r requirements.txt
