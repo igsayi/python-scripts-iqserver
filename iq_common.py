@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 from requests import Session
 from requests.auth import HTTPBasicAuth
 
-if load_dotenv():
+dotenv_path = os.path.join(os.path.dirname(__file__), "sayi.env")
+if load_dotenv(dotenv_path):
     iq_user: str = os.getenv("IQ_USERNAME", "")
     iq_token: str = os.getenv("IQ_TOKEN", "")
     iq_url: str = os.getenv("IQ_URL", "")
@@ -105,6 +106,8 @@ def saveOutputxml(file_name, d):
 
 
 def saveExcelReport(file_name, d):
+    if not os.path.exists("output"):
+        os.mkdir("output")
     df = pd.DataFrame.from_dict(d)
     reportfile = f'output/{file_name}-{format(datetime.now().strftime("%Y%m%d"))}.xlsx'
     df.to_excel(reportfile, index=False)
