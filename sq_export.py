@@ -1,5 +1,6 @@
 import csv
 import getpass
+import html
 import json
 import os
 from datetime import datetime
@@ -41,7 +42,14 @@ def main():
 
     sq_url = "https://sonarqube.standard.com"
 
-    compName = input("Project Name: ")
+    branchName = html.escape(input("Branch Name (default is master): "))
+    if len(branchName) > 0:
+        print("Pulling metrics for branch: " + str(branchName))
+        branchName = "branch=" + str(branchName) + "&"
+    else:
+        print("Pulling metrics for default branch master")
+
+    compName = html.escape(input("application name: "))
     #    compName = "eb-gac-ggf-group-summary-api"
     if len(compName) > 0:
         print("Searching for: " + str(compName))
@@ -64,8 +72,8 @@ def main():
         print("app: " + app["key"])
         measures = {}
         finalReportRecord = {}
-        measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?branch=develop&component={app["key"]}').json()
-        componentShow = sq_session.get(f'{sq_url}/sonarqube/api/components/show?branch=develop&component={app["key"]}').json()["component"]
+        measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?{branchName}component={app["key"]}').json()
+        componentShow = sq_session.get(f'{sq_url}/sonarqube/api/components/show?{branchName}component={app["key"]}').json()["component"]
         # print("measures: "+ str(measures))
         # print("componentShow: "+ str(componentShow))
         measures.update(measures["measures"])
@@ -98,7 +106,7 @@ def main():
         # print("measures: "+ str(measures))
         # finalReport.append(measures)
         finalReport.append(finalReportRecord)
-    savecsvreport("sq_Report" + compName, finalReport)
+    savecsvreport("sq_Report-" + compName, finalReport)
     # saveOutput("sq_Report", finalReport)
     # saveOutput("sq_Report-measures", measures)
 
