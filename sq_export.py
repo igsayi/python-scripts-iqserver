@@ -72,7 +72,11 @@ def main():
         print("app: " + app["key"])
         measures = {}
         finalReportRecord = {}
-        measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?{branchName}component={app["key"]}').json()
+        # measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?{branchName}component={app["key"]}').json()
+        response = measures = sq_session.get(f'{sq_url}/sonarqube/api/components/app?{branchName}component={app["key"]}')
+        if response.status_code != 200:
+            continue
+        measures = response.json()
         componentShow = sq_session.get(f'{sq_url}/sonarqube/api/components/show?{branchName}component={app["key"]}').json()["component"]
         # print("measures: "+ str(measures))
         # print("componentShow: "+ str(componentShow))
