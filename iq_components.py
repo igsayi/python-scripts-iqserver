@@ -10,6 +10,9 @@ def main():
     iq_url = "https://iqserver.standard.com"
 
     componentReport = []
+    angularReport = []
+    springbootReport = []
+    springframeworkReport = []
 
     for app in apps:
         app_id = app["id"]
@@ -29,15 +32,15 @@ def main():
             for rawComponent in rawComponents:
                 component = {}
                 component["organization"] = app["organization"]
-                component["apppublicId"] = app["publicId"]
+                component["appName"] = app["publicId"]
                 component["appExposure"] = app["appExposure"]
-                component["Stage"] = reportId["stage"]
-                component["EvalDate"] = evalDate
-                component["hash"] = rawComponent["hash"]
+                # component["Stage"] = reportId["stage"]
+                # component["EvalDate"] = evalDate
+                # component["hash"] = rawComponent["hash"]
                 component["displayName"] = rawComponent["displayName"]
                 component["packageUrl"] = rawComponent["packageUrl"]
-                component["pathname"] = str(rawComponent["pathnames"])[0:500]
-                component["proprietary"] = rawComponent["proprietary"]
+                # component["pathname"] = str(rawComponent["pathnames"])[0:500]
+                # component["proprietary"] = rawComponent["proprietary"]
                 component["matchState"] = rawComponent["matchState"]
                 component["format"] = ""
                 component["directDependency"] = ""
@@ -51,8 +54,22 @@ def main():
                         component["parentComponentPurls"] = str(rawComponent["dependencyData"]["parentComponentPurls"])
 
                 componentReport.append(component)
+                component.pop("matchState")
+                component.pop("format")
+                component.pop("directDependency")
+                component.pop("parentComponentPurls")
+                component.pop("packageUrl")
+                if str(component["displayName"]).startswith("org.springframework : spring-core :"):
+                    springframeworkReport.append(component)
+                if str(component["displayName"]).startswith("@angular/core :"):
+                    angularReport.append(component)
+                if str(component["displayName"]).startswith("org.springframework.boot : spring-boot :"):
+                    springbootReport.append(component)
 
     saveExcelReport(os.path.splitext(os.path.basename(__file__))[0], componentReport)
+    saveExcelReport("springframeworkReport", springframeworkReport)
+    saveExcelReport("springbootReport", springbootReport)
+    saveExcelReport("angularReport", angularReport)
 
 
 if __name__ == "__main__":
